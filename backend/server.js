@@ -11,6 +11,9 @@ app.use('/user', authRoutes);
 app.use(cors());
 app.use(express.json());
 
+const movieRoutes = require("./routes/movieRoutes");
+app.use("/movies", movieRoutes);
+
 app.get('/', (req, res) => {
   res.send('API Watchlist opérationnelle');
 });
