@@ -9,7 +9,7 @@ exports.addMovie = async (req, res) => {
       imdbID,
       poster,
       status,
-      rating,
+      rating: (status === "vu" && rating) ? rating : null,
       user: req.user.id,
     });
 
