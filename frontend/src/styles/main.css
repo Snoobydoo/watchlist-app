@@ -20,7 +20,7 @@
   border-radius: 15px;
   background-color: var(--main-beige);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border: var(--main-red) 10px solid;
+  border: var(--main-red) 5px solid;
 }
 
 form {
@@ -49,6 +49,7 @@ form button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: 0.5s;
 }
 
 form button:hover {
