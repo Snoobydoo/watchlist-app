@@ -1,6 +1,6 @@
 :root {
-    --main-red: #ab1313;
-    --darker-red: #901010;
+  --main-red: #ab1313;
+  --darker-red: #901010;
 }
 
 /* Form styles */
@@ -31,6 +31,7 @@ form input {
   margin-bottom: 1rem;
   border: 3px solid var(--main-red);
   border-radius: 4px;
+  outline: none;
 }
 
 form button {
@@ -45,4 +46,19 @@ form button {
 
 form button:hover {
   background-color: var(--darker-red);
+}
+
+/* Error message styles */
+
+.form-error {
+  margin-top: 1rem;
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
 }
