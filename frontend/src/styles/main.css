@@ -1,6 +1,8 @@
 :root {
   --main-red: #ab1313;
   --darker-red: #901010;
+  --lighter-red: #dda0a0;
+  --main-beige: #EBE1C5;
 }
 
 /* Form styles */
@@ -16,7 +18,7 @@
   margin: 80px auto;
   padding: 0.5rem 2rem 2rem 2rem;
   border-radius: 15px;
-  background-color: #fff;
+  background-color: var(--main-beige);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: var(--main-red) 10px solid;
 }
@@ -32,6 +34,11 @@ form input {
   border: 3px solid var(--main-red);
   border-radius: 4px;
   outline: none;
+  background-color: white;
+}
+
+form input::placeholder {
+  color: #4c4c4c;
 }
 
 form button {
@@ -52,12 +59,12 @@ form button:hover {
 
 .form-error {
   margin-top: 1rem;
-  color: red;
+  color: var(--main-red);
   font-weight: bold;
   text-align: center;
   padding: 1rem;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  background-color: var(--lighter-red);
+  border: 1px solid var(--main-red);
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;

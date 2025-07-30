@@ -74,7 +74,43 @@ const Register = () => {
         <button type="submit">S'inscrire</button>
       </form>
 
-      {error && <div className="form-error">{error}</div>}
+      {error && (
+        <div className="form-error">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            width="30"
+            height="30"
+            style={{ marginRight: "8px", verticalAlign: "middle" }}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v2m0 4h.01M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.793 2.45-2.537 4.5-4.84 5.544A9.969 9.969 0 0112 19a9.969 9.969 0 01-4.702-1.456C5.995 16.5 4.251 14.45 3.458 12z"
+            />
+          </svg>
+          {error}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            width="30"
+            height="30"
+            style={{ marginLeft: "8px", verticalAlign: "middle" }}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v2m0 4h.01M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.793 2.45-2.537 4.5-4.84 5.544A9.969 9.969 0 0112 19a9.969 9.969 0 01-4.702-1.456C5.995 16.5 4.251 14.45 3.458 12z"
+            />
+          </svg>
+        </div>
+      )}
     </div>
   );
 };
