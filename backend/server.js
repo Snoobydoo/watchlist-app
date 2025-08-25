@@ -6,30 +6,30 @@ require("dotenv").config();
 
 const app = express();
 
-// ✅ CORS avant les routes
+// CORS
 app.use(
   cors({
-    origin: "http://localhost:3000", // ton frontend
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
 
-// ✅ Body parser
+// Body parser
 app.use(express.json());
 
-// ✅ Routes
-const authRoutes = require("./routes/authRoutes"); // /user/register et /user/login
-const movieRoutes = require("./routes/movieRoutes"); // /movies/*
+// Routes
+const authRoutes = require("./routes/authRoutes");
+const movieRoutes = require("./routes/movieRoutes");
 
 app.use("/user", authRoutes);
 app.use("/movies", movieRoutes);
 
-// ✅ Route test
+// Route test
 app.get("/", (req, res) => {
   res.send("API Watchlist opérationnelle");
 });
 
-// ✅ Connexion à MongoDB et lancement serveur
+// Connexion à MongoDB et lancement serveur
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
