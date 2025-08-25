@@ -58,7 +58,7 @@ form button:hover {
 
 /* Error message styles */
 
-.form-error {
+.form-error, .form-success {
   margin-top: 1rem;
   color: var(--main-red);
   font-weight: bold;

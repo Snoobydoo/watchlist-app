@@ -1,24 +1,37 @@
+// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+
+// ✅ CORS avant les routes
+app.use(
+  cors({
+    origin: "http://localhost:3000", // ton frontend
+    credentials: true,
+  })
+);
+
+// ✅ Body parser
 app.use(express.json());
 
-const authRoutes = require("./routes/authRoutes");
+// ✅ Routes
+const authRoutes = require("./routes/authRoutes"); // /user/register et /user/login
+const movieRoutes = require("./routes/movieRoutes"); // /movies/*
+
 app.use("/user", authRoutes);
-app.use(cors());
-app.use(express.json());
-
-const movieRoutes = require("./routes/movieRoutes");
 app.use("/movies", movieRoutes);
 
+// ✅ Route test
 app.get("/", (req, res) => {
   res.send("API Watchlist opérationnelle");
 });
 
-mongoose.connect(process.env.MONGO_URI)
+// ✅ Connexion à MongoDB et lancement serveur
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("Connecté à MongoDB");
     app.listen(5000, () => console.log("Serveur sur http://localhost:5000"));

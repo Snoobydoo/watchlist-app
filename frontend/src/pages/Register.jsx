@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -8,32 +9,52 @@ const Register = () => {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
-    setError(""); // Efface l'erreur à chaque frappe
+    setError("");
+    setSuccess("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
 
     const { username, email, password, confirmPassword } = formData;
 
+    // Validation front
     if (!username || !email || !password || !confirmPassword) {
       setError("Tous les champs doivent être remplis.");
       return;
     }
-
     if (password !== confirmPassword) {
       setError("Les mots de passe ne correspondent pas.");
       return;
     }
 
-    console.log("Inscription réussie", formData);
-    // Envoi au backend à faire ici
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/register`,
+        { username, email, password, confirmPassword },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      setSuccess(res.data.message || "Inscription réussie !");
+      setFormData({ username: "", email: "", password: "", confirmPassword: "" });
+    } catch (err) {
+      console.error("Axios error:", err);
+      if (err.response) {
+        setError(err.response.data?.error || "Erreur serveur.");
+      } else if (err.request) {
+        setError("Impossible de joindre le serveur (CORS ou réseau).");
+      } else {
+        setError(err.message || "Erreur inconnue côté client.");
+      }
+    }
   };
 
   return (
@@ -74,43 +95,8 @@ const Register = () => {
         <button type="submit">S'inscrire</button>
       </form>
 
-      {error && (
-        <div className="form-error">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            width="30"
-            height="30"
-            style={{ marginRight: "8px", verticalAlign: "middle" }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v2m0 4h.01M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.793 2.45-2.537 4.5-4.84 5.544A9.969 9.969 0 0112 19a9.969 9.969 0 01-4.702-1.456C5.995 16.5 4.251 14.45 3.458 12z"
-            />
-          </svg>
-          {error}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            width="30"
-            height="30"
-            style={{ marginLeft: "8px", verticalAlign: "middle" }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v2m0 4h.01M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.793 2.45-2.537 4.5-4.84 5.544A9.969 9.969 0 0112 19a9.969 9.969 0 01-4.702-1.456C5.995 16.5 4.251 14.45 3.458 12z"
-            />
-          </svg>
-        </div>
-      )}
+      {error && <div className="form-error">⚠️ {error}</div>}
+      {success && <div className="form-success">✅ {success}</div>}
     </div>
   );
 };
