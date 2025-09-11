@@ -1,5 +1,5 @@
 :root {
-  --main-red: #ab1313;
+  --main-red: #751919;
   --darker-red: #901010;
   --lighter-red: #dda0a0;
   --main-beige: #EBE1C5;
@@ -10,7 +10,7 @@
 .form-header {
   text-align: center;
   margin-bottom: 2rem;
-  color: var(--main-red);
+  color: var(--main-beige);
 }
 
 .form-container {
@@ -18,9 +18,9 @@
   margin: 80px auto;
   padding: 0.5rem 2rem 2rem 2rem;
   border-radius: 15px;
-  background-color: var(--main-beige);
+  background-color: var(--main-red);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border: var(--main-red) 5px solid;
+  border: var(--main-beige) 5px solid;
 }
 
 form {
@@ -56,7 +56,7 @@ form button:hover {
   background-color: var(--darker-red);
 }
 
-/* Error message styles */
+/* Error/Success message styles */
 
 .form-error, .form-success {
   margin-top: 1rem;
