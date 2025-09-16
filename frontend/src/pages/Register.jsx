@@ -60,7 +60,7 @@ const Register = () => {
   return (
     <div className="form-container">
       <div className="form-header">
-        <h2>Créer un compte</h2>
+        <h1>Créer un compte</h1>
       </div>
 
       <form onSubmit={handleSubmit}>

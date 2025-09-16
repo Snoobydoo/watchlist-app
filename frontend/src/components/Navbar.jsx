@@ -1,24 +1,84 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+
+  // Effet au scroll pour changer l'apparence
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fermer le menu mobile quand on change de page
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <nav className="navbar">
-      <ul className="navbar-links">
+    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+
+      {/* Bouton hamburger pour mobile */}
+      <button 
+        className="navbar-toggle"
+        onClick={toggleMobileMenu}
+        aria-label="Toggle navigation"
+      >
+        {isMobileMenuOpen ? '✕' : '☰'}
+      </button>
+
+      {/* Menu de navigation */}
+      <ul className={`navbar-links ${isMobileMenuOpen ? 'active' : ''}`}>
         <li>
-          <Link to="/">Accueil</Link>
+          <Link 
+            to="/" 
+            className={location.pathname === '/' ? 'active' : ''}
+          >
+            Accueil
+          </Link>
         </li>
         <li>
-          <Link to="/watchlist">Ma Watchlist</Link>
+          <Link 
+            to="/watchlist"
+            className={location.pathname === '/watchlist' ? 'active' : ''}
+          >
+            Ma Watchlist
+          </Link>
         </li>
         <li>
-          <Link to="/login">Connexion</Link>
+          <Link 
+            to="/search"
+            className={location.pathname === '/search' ? 'active' : ''}
+          >
+            Films
+          </Link>
         </li>
         <li>
-          <Link to="/register">Inscription</Link>
+          <Link 
+            to="/login"
+            className={location.pathname === '/login' ? 'active' : ''}
+          >
+            Connexion
+          </Link>
         </li>
         <li>
-          <Link to="/search">Films</Link>
+          <Link 
+            to="/register"
+            className={location.pathname === '/register' ? 'active' : ''}
+          >
+            Inscription
+          </Link>
         </li>
       </ul>
     </nav>
