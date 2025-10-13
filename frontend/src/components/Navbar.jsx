@@ -14,7 +14,7 @@ const Navbar = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, [location]); // Se met à jour quand on change de page
+  }, [location]);
 
   // Effet au scroll pour changer l'apparence
   useEffect(() => {
@@ -43,6 +43,14 @@ const Navbar = () => {
     navigate("/");
   };
 
+  // Fonction pour gérer le clic sur Watchlist
+  const handleWatchlistClick = (e) => {
+    if (!user) {
+      e.preventDefault(); // Empêcher la navigation normale
+      navigate("/login"); // Rediriger vers login
+    }
+  };
+
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
 
@@ -68,6 +76,7 @@ const Navbar = () => {
         <li>
           <Link 
             to="/watchlist"
+            onClick={handleWatchlistClick}
             className={location.pathname === '/watchlist' ? 'active' : ''}
           >
             Ma Watchlist
