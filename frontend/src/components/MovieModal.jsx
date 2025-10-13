@@ -1,4 +1,3 @@
-// src/components/MovieModal.jsx
 import React, { useState, useEffect } from 'react';
 import '../styles/MovieModal.css';
 

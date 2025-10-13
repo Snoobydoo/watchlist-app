@@ -1,4 +1,3 @@
-// src/pages/Search.jsx
 import React, { useState, useEffect } from 'react';
 import MovieCard from '../components/MovieCard';
 import MovieModal from '../components/MovieModal';
