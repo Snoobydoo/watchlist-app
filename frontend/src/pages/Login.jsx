@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,8 @@ const Login = () => {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -16,7 +19,7 @@ const Login = () => {
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -25,8 +28,39 @@ const Login = () => {
       return;
     }
 
-    console.log("Connexion", formData);
-    // Envoyer ici vers le backend
+    setLoading(true);
+
+    try {
+      // CONNEXION AU BACKEND - Ajustez l'URL selon votre configuration
+      const response = await fetch("http://localhost:5000/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erreur lors de la connexion");
+      }
+
+      // Sauvegarder le token et les infos utilisateur
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Rediriger vers l'accueil
+      navigate("/");
+      
+      // Recharger la page pour mettre à jour la navbar
+      window.location.reload();
+      
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,7 +75,7 @@ const Login = () => {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
-          //required
+          disabled={loading}
         />
         <input
           type="password"
@@ -49,10 +83,12 @@ const Login = () => {
           placeholder="Mot de passe"
           value={formData.password}
           onChange={handleChange}
-          //required
+          disabled={loading}
         />
 
-        <button type="submit">Se connecter</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Connexion..." : "Se connecter"}
+        </button>
       </form>
 
       {error && (
