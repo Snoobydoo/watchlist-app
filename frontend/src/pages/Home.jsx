@@ -34,7 +34,7 @@ export default function Home() {
     setLoading(false);
   };
 
-   const fetchTrending = async () => {
+  const fetchTrending = async () => {
     try {
       const response = await fetch(
         `${API_BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=fr-FR`
@@ -46,7 +46,7 @@ export default function Home() {
     }
   };
 
- const fetchUpcoming = async () => {
+  const fetchUpcoming = async () => {
     try {
       const response = await fetch(
         `${API_BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=fr-FR&page=1`
@@ -58,13 +58,34 @@ export default function Home() {
     }
   };
 
- const fetchTopRated = async () => {
+  const fetchTopRated = async () => {
     try {
       const response = await fetch(
         `${API_BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=fr-FR&page=1`
       );
       const data = await response.json();
       setTopRatedMovies(data.results?.slice(0, 10) || []);
+    } catch (err) {
+      console.error('Erreur:', err);
+    }
+  };
+
+  const fetchWatchlistIds = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const response = await fetch('http://localhost:5000/api/watchlist', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const ids = new Set(data.map(movie => movie.tmdb_id));
+        setWatchlistIds(ids);
+      }
     } catch (err) {
       console.error('Erreur:', err);
     }
