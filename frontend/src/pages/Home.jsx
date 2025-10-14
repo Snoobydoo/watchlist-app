@@ -56,4 +56,16 @@ export default function Home() {
     } catch (err) {
       console.error('Erreur:', err);
     }
+  };
+
+ const fetchTopRated = async () => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=fr-FR&page=1`
+      );
+      const data = await response.json();
+      setTopRatedMovies(data.results?.slice(0, 10) || []);
+    } catch (err) {
+      console.error('Erreur:', err);
+    }
   };}
