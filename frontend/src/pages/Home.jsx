@@ -32,4 +32,16 @@ export default function Home() {
       fetchUserStats()
     ]);
     setLoading(false);
+  };
+
+   const fetchTrending = async () => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=fr-FR`
+      );
+      const data = await response.json();
+      setTrendingMovies(data.results?.slice(0, 10) || []);
+    } catch (err) {
+      console.error('Erreur:', err);
+    }
   };}
