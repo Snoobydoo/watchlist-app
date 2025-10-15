@@ -168,4 +168,9 @@ export default function Home() {
     } catch (err) {
       console.error('Erreur:', err);
     }
+  };
+
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
   };}
