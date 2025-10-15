@@ -115,4 +115,57 @@ export default function Home() {
     } catch (err) {
       console.error('Erreur:', err);
     }
+  };
+
+ const toggleWatchlist = async (movie) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Veuillez vous connecter pour ajouter des films à votre watchlist');
+      navigate('/login');
+      return;
+    }
+
+    const isInWatchlist = watchlistIds.has(movie.id);
+
+    try {
+      if (isInWatchlist) {
+        const response = await fetch(`http://localhost:5000/api/watchlist/${movie.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const newIds = new Set(watchlistIds);
+          newIds.delete(movie.id);
+          setWatchlistIds(newIds);
+          fetchUserStats();
+        }
+      } else {
+        const response = await fetch('http://localhost:5000/api/watchlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            tmdb_id: movie.id,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            release_date: movie.release_date,
+            vote_average: movie.vote_average
+          })
+        });
+
+        if (response.ok) {
+          const newIds = new Set(watchlistIds);
+          newIds.add(movie.id);
+          setWatchlistIds(newIds);
+          fetchUserStats();
+        }
+      }
+    } catch (err) {
+      console.error('Erreur:', err);
+    }
   };}
