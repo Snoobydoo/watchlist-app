@@ -89,4 +89,30 @@ export default function Home() {
     } catch (err) {
       console.error('Erreur:', err);
     }
+  };
+
+ const fetchUserStats = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const response = await fetch('http://localhost:5000/api/watchlist', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const stats = {
+          total: data.length,
+          toWatch: data.filter(m => m.status === 'to_watch').length,
+          watching: data.filter(m => m.status === 'watching').length,
+          watched: data.filter(m => m.status === 'watched').length
+        };
+        setUserStats(stats);
+      }
+    } catch (err) {
+      console.error('Erreur:', err);
+    }
   };}
