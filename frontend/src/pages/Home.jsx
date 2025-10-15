@@ -173,4 +173,9 @@ export default function Home() {
   const handleMovieClick = (movie) => {
     setSelectedMovie(movie);
     setIsModalOpen(true);
+  };
+
+const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedMovie(null), 300);
   };}
