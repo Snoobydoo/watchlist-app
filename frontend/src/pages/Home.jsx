@@ -1,3 +1,4 @@
+// src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MovieCard from '../components/MovieCard';
@@ -80,7 +81,7 @@ export default function Home() {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         const ids = new Set(data.map(movie => movie.tmdb_id));
@@ -91,7 +92,7 @@ export default function Home() {
     }
   };
 
- const fetchUserStats = async () => {
+  const fetchUserStats = async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
@@ -101,7 +102,7 @@ export default function Home() {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         const stats = {
@@ -117,7 +118,7 @@ export default function Home() {
     }
   };
 
- const toggleWatchlist = async (movie) => {
+  const toggleWatchlist = async (movie) => {
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Veuillez vous connecter pour ajouter des films à votre watchlist');
@@ -175,7 +176,72 @@ export default function Home() {
     setIsModalOpen(true);
   };
 
-const handleCloseModal = () => {
+  const handleCloseModal = () => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedMovie(null), 300);
-  };}
+  };
+
+  const MovieCarousel = ({ title, movies, icon }) => (
+    <div className="carousel-section">
+      <div className="carousel-header">
+        <h2 className="carousel-title">
+          <span className="carousel-icon">{icon}</span>
+          {title}
+        </h2>
+        <button className="carousel-see-all" onClick={() => navigate('/search')}>
+          Voir tout →
+        </button>
+      </div>
+      <div className="carousel-container">
+        <div className="carousel-scroll">
+          {movies.map((movie) => (
+            <div key={movie.id} className="carousel-item">
+              <MovieCard
+                movie={movie}
+                isInWatchlist={watchlistIds.has(movie.id)}
+                onToggleWatchlist={toggleWatchlist}
+                onMovieClick={handleMovieClick}
+                showControls={false}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (loading) {
+    return (
+      <div className="home-loading">
+        <div className="spinner"></div>
+        <p>Chargement...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="home-page">
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="hero-background"></div>
+        <div className="hero-content">
+          <h1 className="hero-title">
+            Votre collection de films
+            <span className="hero-gradient"> personnelle</span>
+          </h1>
+          <p className="hero-subtitle">
+            Découvrez, sauvegardez et suivez tous les films que vous souhaitez regarder
+          </p>
+          <div className="hero-buttons">
+            <button className="hero-btn primary" onClick={() => navigate('/search')}>
+              🔍 Découvrir des films
+            </button>
+            <button className="hero-btn secondary" onClick={() => navigate('/watchlist')}>
+              ❤️ Ma watchlist
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
