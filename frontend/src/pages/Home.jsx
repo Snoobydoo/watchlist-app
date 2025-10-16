@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MovieCard from '../components/MovieCard';
@@ -240,6 +239,26 @@ export default function Home() {
               ❤️ Ma watchlist
             </button>
           </div>
+
+          {/* Stats utilisateur */}
+          {userStats && userStats.total > 0 && (
+            <div className="hero-stats">
+              <div className="stat-item">
+                <span className="stat-number">{userStats.total}</span>
+                <span className="stat-label">Films</span>
+              </div>
+              <div className="stat-divider"></div>
+              <div className="stat-item">
+                <span className="stat-number">{userStats.watched}</span>
+                <span className="stat-label">Vus</span>
+              </div>
+              <div className="stat-divider"></div>
+              <div className="stat-item">
+                <span className="stat-number">{userStats.toWatch}</span>
+                <span className="stat-label">À voir</span>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>
