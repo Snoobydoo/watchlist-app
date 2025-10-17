@@ -297,6 +297,13 @@ export default function Home() {
         movies={trendingMovies}
         icon="🔥"
       />
+
+      {/* Prochaines sorties */}
+      <MovieCarousel 
+        title="Prochainement au cinéma" 
+        movies={upcomingMovies}
+        icon="🎬"
+      />
     </div>
   );
 }
