@@ -81,7 +81,7 @@ export default function Home() {
           'Authorization': `Bearer ${token}`
         }
       });
-
+      
       if (response.ok) {
         const data = await response.json();
         const ids = new Set(data.map(movie => movie.tmdb_id));
@@ -102,7 +102,7 @@ export default function Home() {
           'Authorization': `Bearer ${token}`
         }
       });
-
+      
       if (response.ok) {
         const data = await response.json();
         const stats = {
@@ -262,35 +262,41 @@ export default function Home() {
           )}
         </div>
       </section>
-    </div>
-  )
 
-  {/* Comment ça marche */ }
-  <section className="how-it-works">
-    <h2 className="section-title">Comment ça marche ?</h2>
-    <div className="steps-grid">
-      <div className="step-card">
-        <div className="step-icon">🔍</div>
-        <h3 className="step-title">1. Recherchez</h3>
-        <p className="step-description">
-          Parcourez des milliers de films et découvrez vos prochains favoris
-        </p>
-      </div>
-      <div className="step-card">
-        <div className="step-icon">❤️</div>
-        <h3 className="step-title">2. Ajoutez</h3>
-        <p className="step-description">
-          Créez votre watchlist personnalisée en un clic
-        </p>
-      </div>
-      <div className="step-card">
-        <div className="step-icon">⭐</div>
-        <h3 className="step-title">3. Suivez</h3>
-        <p className="step-description">
-          Notez vos films et suivez votre progression
-        </p>
-      </div>
+      {/* Comment ça marche */}
+      <section className="how-it-works">
+        <h2 className="section-title">Comment ça marche ?</h2>
+        <div className="steps-grid">
+          <div className="step-card">
+            <div className="step-icon">🔍</div>
+            <h3 className="step-title">1. Recherchez</h3>
+            <p className="step-description">
+              Parcourez des milliers de films et découvrez vos prochains favoris
+            </p>
+          </div>
+          <div className="step-card">
+            <div className="step-icon">❤️</div>
+            <h3 className="step-title">2. Ajoutez</h3>
+            <p className="step-description">
+              Créez votre watchlist personnalisée en un clic
+            </p>
+          </div>
+          <div className="step-card">
+            <div className="step-icon">⭐</div>
+            <h3 className="step-title">3. Suivez</h3>
+            <p className="step-description">
+              Notez vos films et suivez votre progression
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Tendances */}
+      <MovieCarousel 
+        title="Tendances de la semaine" 
+        movies={trendingMovies}
+        icon="🔥"
+      />
     </div>
-  </section>
-    ;
+  );
 }
