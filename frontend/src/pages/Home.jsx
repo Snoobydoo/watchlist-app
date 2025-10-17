@@ -304,6 +304,13 @@ export default function Home() {
         movies={upcomingMovies}
         icon="🎬"
       />
+
+      {/* Mieux notés */}
+      <MovieCarousel 
+        title="Les mieux notés" 
+        movies={topRatedMovies}
+        icon="⭐"
+      />
     </div>
   );
 }
