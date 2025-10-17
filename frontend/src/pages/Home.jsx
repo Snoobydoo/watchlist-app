@@ -311,6 +311,17 @@ export default function Home() {
         movies={topRatedMovies}
         icon="⭐"
       />
+
+      {/* Modal */}
+      {selectedMovie && (
+        <MovieModal
+          movie={selectedMovie}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          isInWatchlist={watchlistIds.has(selectedMovie.id)}
+          onToggleWatchlist={toggleWatchlist}
+        />
+      )}
     </div>
   );
 }
