@@ -1,4 +1,14 @@
+.search-page {
+  min-height: 100vh;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
+.search-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
 
 .search-title {
   font-size: 2.5rem;
