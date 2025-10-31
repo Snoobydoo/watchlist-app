@@ -1,19 +1,6 @@
 /* src/styles/Home.css */
 
-.home-page {
-  min-height: 100vh;
-  padding-bottom: 4rem;
-}
 
-/* Loading */
-.home-loading {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #9ca3af;
-}
 
 /* Hero Section */
 .hero-section {
