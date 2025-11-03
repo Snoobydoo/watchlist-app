@@ -6,6 +6,10 @@
   -moz-user-select: none;
 }
 
+p {
+  user-select: text;
+}
+
 .home-page {
   min-height: 100vh;
   padding-bottom: 4rem;
