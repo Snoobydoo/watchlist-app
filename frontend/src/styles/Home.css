@@ -1,5 +1,11 @@
 /* src/styles/Home.css */
 
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
 .home-page {
   min-height: 100vh;
   padding-bottom: 4rem;
