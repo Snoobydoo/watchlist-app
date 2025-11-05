@@ -1,26 +1,4 @@
-import React, { useState } from 'react';
-import '../styles/MovieCard.css';
 
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
-
-export default function MovieCard({ 
-  movie, 
-  isInWatchlist = false, 
-  onToggleWatchlist,
-  onUpdateRating,
-  onUpdateStatus,
-  onMovieClick,
-  showControls = false 
-}) {
-  const [localRating, setLocalRating] = useState(movie.rating || 0);
-  const [localStatus, setLocalStatus] = useState(movie.status || 'to_watch');
-  const [hoveredStar, setHoveredStar] = useState(0);
-
-  const handleCardClick = () => {
-    if (onMovieClick) {
-      onMovieClick(movie);
-    }
-  };
 
   const handleHeartClick = (e) => {
     e.stopPropagation(); // Empêche l'ouverture du modal
