@@ -1,4 +1,20 @@
+import React, { useState, useEffect } from 'react';
+import '../styles/MovieModal.css';
 
+const API_KEY = 'd9c6ab9b273efa978d1536a70966bf65';
+const API_BASE_URL = 'https://api.themoviedb.org/3';
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const BACKDROP_BASE_URL = 'https://image.tmdb.org/t/p/original';
+
+export default function MovieModal({ movie, isOpen, onClose, isInWatchlist, onToggleWatchlist }) {
+  const [movieDetails, setMovieDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (isOpen && movie) {
+      fetchMovieDetails();
+    }
+  }, [isOpen, movie]);
 
   const fetchMovieDetails = async () => {
     setLoading(true);
