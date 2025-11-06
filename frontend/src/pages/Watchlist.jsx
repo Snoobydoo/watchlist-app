@@ -50,17 +50,18 @@ export default function Watchlist() {
   };
 
   const handleMovieClick = (movie) => {
-    // Convertir le format de la base de données au format TMDB pour le modal
-    const tmdbMovie = {
-      id: movie.tmdb_id,
-      title: movie.title,
-      poster_path: movie.poster_path,
-      release_date: movie.release_date,
-      vote_average: movie.vote_average
-    };
-    setSelectedMovie(tmdbMovie);
-    setIsModalOpen(true);
+  // movie.id existe déjà (car vous l'avez passé dans MovieCard)
+  const tmdbMovie = {
+    id: movie.id,  // ✅ Utilisez movie.id au lieu de movie.tmdb_id
+    title: movie.title,
+    poster_path: movie.poster_path,
+    release_date: movie.release_date,
+    vote_average: movie.vote_average || 0
   };
+  
+  setSelectedMovie(tmdbMovie);
+  setIsModalOpen(true);
+};
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

@@ -103,7 +103,7 @@ export default function MovieModal({ movie, isOpen, onClose, isInWatchlist, onTo
                       ⏱️ {formatRuntime(movieDetails.runtime)}
                     </span>
                     <span className="meta-item rating">
-                      ⭐ {movieDetails.vote_average.toFixed(1)}/10
+                      ⭐ {movieDetails.vote_average ? movieDetails.vote_average.toFixed(1) : 'N/A'}/10
                     </span>
                   </div>
 
