@@ -69,28 +69,29 @@ export default function Watchlist() {
   };
 
   const removeFromWatchlist = async (movie) => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
+  const token = localStorage.getItem('token');
+  if (!token) return;
 
-    try {
-      const response = await fetch(`http://localhost:5000/api/watchlist/${movie.tmdb_id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (response.ok) {
-        setMovies(movies.filter(m => m.tmdb_id !== movie.tmdb_id));
-        const newIds = new Set(watchlistIds);
-        newIds.delete(movie.tmdb_id);
-        setWatchlistIds(newIds);
+  try {
+    const response = await fetch(`http://localhost:5000/api/watchlist/${movie.id}`, {  // ✅ movie.id au lieu de movie.tmdb_id
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
-    } catch (err) {
-      console.error('Erreur:', err);
-      alert('Erreur lors de la suppression');
+    });
+
+    if (response.ok) {
+      // Mettre à jour l'état local pour retirer le film de l'affichage
+      setMovies(movies.filter(m => m.tmdb_id !== movie.id));  // ✅ Comparer avec movie.id
+      const newIds = new Set(watchlistIds);
+      newIds.delete(movie.id);  // ✅ movie.id
+      setWatchlistIds(newIds);
     }
-  };
+  } catch (err) {
+    console.error('Erreur:', err);
+    alert('Erreur lors de la suppression');
+  }
+};
 
   const updateRating = async (tmdbId, rating) => {
     const token = localStorage.getItem('token');
