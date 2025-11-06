@@ -22,7 +22,7 @@ const authRoutes = require("./routes/authRoutes");
 const movieRoutes = require("./routes/movieRoutes");
 
 app.use("/user", authRoutes);
-app.use("/movies", movieRoutes);
+app.use("/api/watchlist", movieRoutes); // Gardez celle-ci
 
 // Route test
 app.get("/", (req, res) => {
