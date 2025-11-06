@@ -3,14 +3,14 @@ import '../styles/MovieCard.css';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-export default function MovieCard({ 
-  movie, 
-  isInWatchlist = false, 
+export default function MovieCard({
+  movie,
+  isInWatchlist = false,
   onToggleWatchlist,
   onUpdateRating,
   onUpdateStatus,
   onMovieClick,
-  showControls = false 
+  showControls = false
 }) {
   const [localRating, setLocalRating] = useState(movie.rating || 0);
   const [localStatus, setLocalStatus] = useState(movie.status || 'to_watch');
@@ -30,9 +30,12 @@ export default function MovieCard({
   };
 
   const handleStarClick = (rating) => {
-    setLocalRating(rating);
+    // Si on clique sur la même étoile, on retire la note
+    const newRating = localRating === rating ? 0 : rating;
+
+    setLocalRating(newRating);
     if (onUpdateRating) {
-      onUpdateRating(movie.id, rating);
+      onUpdateRating(movie.id, newRating);
     }
   };
 
@@ -45,7 +48,7 @@ export default function MovieCard({
   };
 
   const getStatusLabel = (status) => {
-    switch(status) {
+    switch (status) {
       case 'to_watch': return 'À voir';
       case 'watching': return 'En cours';
       case 'watched': return 'Vu';
@@ -54,7 +57,7 @@ export default function MovieCard({
   };
 
   const getStatusColor = (status) => {
-    switch(status) {
+    switch (status) {
       case 'to_watch': return '#fbbf24';
       case 'watching': return '#3b82f6';
       case 'watched': return '#10b981';
@@ -63,9 +66,9 @@ export default function MovieCard({
   };
 
   return (
-    <div 
-      className="movie-card" 
-      onClick={handleCardClick} 
+    <div
+      className="movie-card"
+      onClick={handleCardClick}
       style={{ cursor: onMovieClick ? 'pointer' : 'default' }}
     >
       {/* Poster */}
@@ -84,7 +87,7 @@ export default function MovieCard({
         )}
 
         {/* Bouton Cœur */}
-        <button 
+        <button
           className={`movie-heart-btn ${isInWatchlist ? 'active' : ''}`}
           onClick={handleHeartClick}
           title={isInWatchlist ? "Retirer de la watchlist" : "Ajouter à la watchlist"}
@@ -103,7 +106,7 @@ export default function MovieCard({
       {/* Informations du film */}
       <div className="movie-info">
         <h3 className="movie-title">{movie.title}</h3>
-        
+
         <div className="movie-meta">
           <span className="movie-year">
             {movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}
@@ -115,7 +118,9 @@ export default function MovieCard({
           <div className="movie-controls" onClick={(e) => e.stopPropagation()}>
             {/* Système d'étoiles */}
             <div className="movie-rating-section">
-              <label className="movie-rating-label">Ma note :</label>
+              <label className="movie-rating-label">
+                Ma note : {localRating > 0 ? `${localRating}/5` : 'Non définie'}
+              </label>
               <div className="movie-stars">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -134,11 +139,11 @@ export default function MovieCard({
             {/* Sélecteur de statut */}
             <div className="movie-status-section">
               <label className="movie-status-label">Statut :</label>
-              <select 
+              <select
                 value={localStatus}
                 onChange={handleStatusChange}
                 className="movie-status-select"
-                style={{ 
+                style={{
                   borderColor: getStatusColor(localStatus),
                   color: getStatusColor(localStatus)
                 }}
