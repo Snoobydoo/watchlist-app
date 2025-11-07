@@ -36,16 +36,31 @@ export default function Home() {
   };
 
   const fetchTrending = async () => {
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=fr-FR`
-      );
-      const data = await response.json();
-      setTrendingMovies(data.results?.slice(0, 10) || []);
-    } catch (err) {
-      console.error('Erreur:', err);
-    }
-  };
+  try {
+    // Calculer la date d'il y a 4 semaines (période plus courte = plus actuel)
+    const today = new Date();
+    const fourWeeksAgo = new Date(today);
+    fourWeeksAgo.setDate(today.getDate() - (4 * 7));
+    
+    const todayFormatted = today.toISOString().split('T')[0];
+    const fourWeeksAgoFormatted = fourWeeksAgo.toISOString().split('T')[0];
+    
+    // Trier par POPULARITÉ (ce qui est le plus vu/recherché)
+    const response = await fetch(
+      `${API_BASE_URL}/discover/movie?api_key=${API_KEY}&language=fr-FR` +
+      `&sort_by=popularity.desc` +  // ✅ Popularité au lieu de note
+      `&primary_release_date.gte=${fourWeeksAgoFormatted}` +
+      `&primary_release_date.lte=${todayFormatted}` +
+      `&vote_count.gte=50` +  // Au moins 50 votes
+      `&page=1`
+    );
+    
+    const data = await response.json();
+    setTrendingMovies(data.results?.slice(0, 10) || []);
+  } catch (err) {
+    console.error('Erreur:', err);
+  }
+};
 
   const fetchUpcoming = async () => {
   try {
