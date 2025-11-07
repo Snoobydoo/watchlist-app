@@ -205,7 +205,8 @@
 .movie-status-select {
   width: 100%;
   padding: 10px 12px;
-  background: rgba(17, 24, 39, 0.8);
+  padding-right: 2.5rem;  /* ✅ Espace pour la flèche custom */
+  background: rgba(17, 24, 39, 0.95);  /* ✅ Fond plus opaque */
   border: 2px solid;
   border-radius: 8px;
   color: inherit;
@@ -216,20 +217,31 @@
   outline: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  
+  /* ✅ Retire le style par défaut du navigateur */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  
+  /* ✅ Flèche personnalisée */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 0.8rem;
 }
 
 .movie-status-select:hover {
-  background: rgba(17, 24, 39, 0.95);
+  background: rgba(17, 24, 39, 1);  /* ✅ Complètement opaque au hover */
   transform: translateY(-1px);
 }
 
 .movie-status-select:focus {
-  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);  /* ✅ Ombre plus visible */
 }
 
 .movie-status-select option {
-  background: #1f2937;
-  color: #e5e7eb;
+  background: #111827;  /* ✅ Fond encore plus sombre */
+  color: #ffffff;  /* ✅ Texte blanc pur */
   padding: 10px;
 }
 
