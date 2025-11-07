@@ -64,25 +64,31 @@ export default function Home() {
 
   const fetchUpcoming = async () => {
   try {
-    // Récupérer 2 pages pour avoir plus de choix
-    const [page1, page2] = await Promise.all([
+    const today = new Date();
+    const threeMonthsLater = new Date(today);
+    threeMonthsLater.setMonth(today.getMonth() + 3);
+    
+    const todayFormatted = today.toISOString().split('T')[0];
+    const threeMonthsFormatted = threeMonthsLater.toISOString().split('T')[0];
+    
+    // Récupérer plusieurs pages
+    const [page1, page2, page3] = await Promise.all([
       fetch(`${API_BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=fr-FR&page=1`),
-      fetch(`${API_BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=fr-FR&page=2`)
+      fetch(`${API_BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=fr-FR&page=2`),
+      fetch(`${API_BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=fr-FR&page=3`)
     ]);
     
     const data1 = await page1.json();
     const data2 = await page2.json();
-    const allMovies = [...(data1.results || []), ...(data2.results || [])];
+    const data3 = await page3.json();
+    const allMovies = [...(data1.results || []), ...(data2.results || []), ...(data3.results || [])];
     
-    // Filtrer pour ne garder que les films futurs
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
+    // Filtrer pour les 3 prochains mois
     const futureMovies = allMovies
       .filter(movie => {
         if (!movie.release_date) return false;
         const releaseDate = new Date(movie.release_date);
-        return releaseDate >= today;
+        return releaseDate >= today && releaseDate <= threeMonthsLater;
       })
       .slice(0, 10);
     
