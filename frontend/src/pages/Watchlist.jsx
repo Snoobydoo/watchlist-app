@@ -50,18 +50,18 @@ export default function Watchlist() {
   };
 
   const handleMovieClick = (movie) => {
-  // movie.id existe déjà (car vous l'avez passé dans MovieCard)
-  const tmdbMovie = {
-    id: movie.id,  // ✅ Utilisez movie.id au lieu de movie.tmdb_id
-    title: movie.title,
-    poster_path: movie.poster_path,
-    release_date: movie.release_date,
-    vote_average: movie.vote_average || 0
+    // movie.id existe déjà (car vous l'avez passé dans MovieCard)
+    const tmdbMovie = {
+      id: movie.id,  // ✅ Utilisez movie.id au lieu de movie.tmdb_id
+      title: movie.title,
+      poster_path: movie.poster_path,
+      release_date: movie.release_date,
+      vote_average: movie.vote_average || 0
+    };
+
+    setSelectedMovie(tmdbMovie);
+    setIsModalOpen(true);
   };
-  
-  setSelectedMovie(tmdbMovie);
-  setIsModalOpen(true);
-};
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -69,29 +69,29 @@ export default function Watchlist() {
   };
 
   const removeFromWatchlist = async (movie) => {
-  const token = localStorage.getItem('token');
-  if (!token) return;
+    const token = localStorage.getItem('token');
+    if (!token) return;
 
-  try {
-    const response = await fetch(`http://localhost:5000/api/watchlist/${movie.id}`, {  // ✅ movie.id au lieu de movie.tmdb_id
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
+    try {
+      const response = await fetch(`http://localhost:5000/api/watchlist/${movie.id}`, {  // ✅ movie.id au lieu de movie.tmdb_id
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        // Mettre à jour l'état local pour retirer le film de l'affichage
+        setMovies(movies.filter(m => m.tmdb_id !== movie.id));  // ✅ Comparer avec movie.id
+        const newIds = new Set(watchlistIds);
+        newIds.delete(movie.id);  // ✅ movie.id
+        setWatchlistIds(newIds);
       }
-    });
-
-    if (response.ok) {
-      // Mettre à jour l'état local pour retirer le film de l'affichage
-      setMovies(movies.filter(m => m.tmdb_id !== movie.id));  // ✅ Comparer avec movie.id
-      const newIds = new Set(watchlistIds);
-      newIds.delete(movie.id);  // ✅ movie.id
-      setWatchlistIds(newIds);
+    } catch (err) {
+      console.error('Erreur:', err);
+      alert('Erreur lors de la suppression');
     }
-  } catch (err) {
-    console.error('Erreur:', err);
-    alert('Erreur lors de la suppression');
-  }
-};
+  };
 
   const updateRating = async (tmdbId, rating) => {
     const token = localStorage.getItem('token');
@@ -108,7 +108,7 @@ export default function Watchlist() {
       });
 
       if (response.ok) {
-        setMovies(movies.map(movie => 
+        setMovies(movies.map(movie =>
           movie.tmdb_id === tmdbId ? { ...movie, rating } : movie
         ));
       }
@@ -132,7 +132,7 @@ export default function Watchlist() {
       });
 
       if (response.ok) {
-        setMovies(movies.map(movie => 
+        setMovies(movies.map(movie =>
           movie.tmdb_id === tmdbId ? { ...movie, status } : movie
         ));
       }
@@ -158,8 +158,8 @@ export default function Watchlist() {
           Ma <span className="title-gradient">Watchlist</span>
         </h1>
         <p className="watchlist-subtitle">
-          {movies.length === 0 
-            ? "Votre collection de films personnelle est vide" 
+          {movies.length === 0
+            ? "Votre collection de films personnelle est vide"
             : `${movies.length} film${movies.length > 1 ? 's' : ''} dans votre collection`
           }
         </p>
@@ -185,25 +185,25 @@ export default function Watchlist() {
         <>
           {/* Filtres */}
           <div className="watchlist-filters">
-            <button 
+            <button
               className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
               onClick={() => setFilter('all')}
             >
               Tous ({getFilterCount('all')})
             </button>
-            <button 
+            <button
               className={`filter-btn ${filter === 'to_watch' ? 'active' : ''}`}
               onClick={() => setFilter('to_watch')}
             >
               À voir ({getFilterCount('to_watch')})
             </button>
-            <button 
+            <button
               className={`filter-btn ${filter === 'watching' ? 'active' : ''}`}
               onClick={() => setFilter('watching')}
             >
               En cours ({getFilterCount('watching')})
             </button>
-            <button 
+            <button
               className={`filter-btn ${filter === 'watched' ? 'active' : ''}`}
               onClick={() => setFilter('watched')}
             >
@@ -251,10 +251,45 @@ export default function Watchlist() {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           isInWatchlist={watchlistIds.has(selectedMovie.id)}
-          onToggleWatchlist={(movie) => {
-            const watchlistMovie = movies.find(m => m.tmdb_id === movie.id);
-            if (watchlistMovie) {
-              removeFromWatchlist(watchlistMovie);
+          onToggleWatchlist={async (movie) => {
+            const isInWatchlist = watchlistIds.has(movie.id);
+
+            if (isInWatchlist) {
+              // Supprimer de la watchlist
+              const movieToRemove = { id: movie.id };
+              await removeFromWatchlist(movieToRemove);
+            } else {
+              // Ajouter à la watchlist
+              const token = localStorage.getItem('token');
+              if (!token) return;
+
+              try {
+                const response = await fetch('http://localhost:5000/api/watchlist', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                  },
+                  body: JSON.stringify({
+                    tmdb_id: movie.id,
+                    title: movie.title,
+                    poster_path: movie.poster_path,
+                    release_date: movie.release_date,
+                    vote_average: movie.vote_average
+                  })
+                });
+
+                if (response.ok) {
+                  const newIds = new Set(watchlistIds);
+                  newIds.add(movie.id);
+                  setWatchlistIds(newIds);
+                  // Recharger la liste des films
+                  fetchWatchlist();
+                }
+              } catch (err) {
+                console.error('Erreur:', err);
+                alert('Erreur lors de l\'ajout');
+              }
             }
           }}
         />
