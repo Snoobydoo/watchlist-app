@@ -10,6 +10,26 @@ export default function MovieModal({ movie, isOpen, onClose, isInWatchlist, onTo
   const [movieDetails, setMovieDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
+   // ✅ Bloquer le scroll quand le modal est ouvert
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup : remettre le scroll quand le composant se démonte
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen && movie) {
+      fetchMovieDetails();
+    }
+  }, [isOpen, movie]);
+
   useEffect(() => {
     if (isOpen && movie) {
       fetchMovieDetails();
